@@ -28,7 +28,7 @@ public class Game
         {
             for (int Y = 0; Y < Height; Y++)
             {
-                EmptyCells.Add(new Cell(new Vector{X = X, Y = Y}, "tile-2", 0 ));
+                EmptyCells.Add(new Cell(new Vector{X = X, Y = Y}, "td", 0 ));
             }
         }
     }
