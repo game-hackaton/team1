@@ -12,7 +12,17 @@ public class Game
     public Guid id { get; set; }
     public int Height { get; set; }
 
+    private int _Score;
+    public int Score
+    {
+        get
+        {
+            return _Score;
+        }
+    }
+
     private bool Finish;
+
     public bool IsFinish
     {
         get { return Finish; }
@@ -20,6 +30,7 @@ public class Game
 
     public Game(int Width, int Height)
     {
+        _Score = 0;
         Cells = new List<Cell>();
         this.Width = Width;
         this.Height = Height;
@@ -46,7 +57,7 @@ public class Game
         var indx = rnd.Next(0, emptyCell.Count + 1);
         emptyCell[indx].content = rnd.Next(1, 3) * 2;
     }
-    
+
     public void ResetGame()
     {
         Cells.Clear();
@@ -55,12 +66,13 @@ public class Game
         {
             for (int Y = 0; Y < Height; Y++)
             {
-                Cells.Add(new Cell(new Vector{X = X, Y = Y}, 0 ));
+                Cells.Add(new Cell(new Vector { X = X, Y = Y }, 0));
             }
         }
+
         AddNewCell();
     }
-    
+
     public CellDto[] PaintGame()
     {
         var testCells = new List<CellDto>();
@@ -68,39 +80,32 @@ public class Game
         {
             testCells.Add(cell.ToDto());
         }
+
         return testCells.ToArray();
     }
 
     public void Move(Direction dir)
     {
-        int begin = -1;
-        int end = -1;
         int napr = -1;
         switch (dir)
         {
             case Direction.LEFT:
-                begin = -1;
-                end = Width;
                 napr = 1;
                 break;
             case Direction.RIGHT:
-                begin = Width;
-                end = -1;
                 napr = -1;
                 break;
             case Direction.UP:
-                begin = Height;
-                end = -1;
-                napr = -1;
-                break;
-            case Direction.DOWN:
-                begin = -1;
-                end = Height;
                 napr = 1;
                 break;
+            case Direction.DOWN:
+                napr = -1;
+                break;
+            default:
+                return;
         }
 
-        if (dir == Direction.UP || dir == Direction.DOWN)
+        if (!(dir == Direction.UP || dir == Direction.DOWN))
         {
             for (int i = 0; i < Width; i++)
             {
@@ -110,7 +115,7 @@ public class Game
                     oldRow[j] = Cells.First((c => c.pos.X == j && c.pos.Y == i)).content;
                 }
 
-                int[] newRow = MoveRow(oldRow, begin, end, napr);
+                int[] newRow = MoveRow(oldRow, napr);
                 for (int j = 0; j < Height; j++)
                 {
                     Cells.First((c => c.pos.X == j && c.pos.Y == i)).content = newRow[j];
@@ -127,54 +132,65 @@ public class Game
                     oldRow[i] = Cells.First((c => c.pos.X == j && c.pos.Y == i)).content;
                 }
 
-                int[] newRow = MoveRow(oldRow, begin, end, napr);
+                int[] newRow = MoveRow(oldRow, napr);
                 for (int i = 0; i < Width; i++)
                 {
                     Cells.First((c => c.pos.X == j && c.pos.Y == i)).content = newRow[i];
                 }
             }
         }
+
         AddNewCell();
     }
 
-    private int[] MoveRow(int[] oldRow, int begin, int end, int napr)
+    private int[] MoveRow(int[] oldRow, int napr)
     {
-        int[] oldRowWithoutZeroes = new int[oldRow.Length];
-        int q = begin;
-        int i = begin;
-        while ((napr == 1 && i<end)||(napr == -1 && i>end))
+        var old = oldRow.ToList();
+        var oldRowWithoutZeroes = new int[old.Count];
+        if (napr == -1)
+        {
+            old.Reverse();
+        }
+
+        int q = 0;
+        int i;
+        for (i = 0; i < oldRow.Length; i++)
         {
             if (oldRow[i] != 0)
             {
                 oldRowWithoutZeroes[q] = oldRow[i];
-                q+=napr;
+                q++;
             }
-
-            i += napr;
         }
 
-        int[] shiftedRow = new int[oldRowWithoutZeroes.Length];
-        q = begin;
-        int index = begin;
-        while ((napr == 1 && index < oldRowWithoutZeroes.Length) || (napr == -1 && index > 0))
-
+        var shiftedRow = new int[old.Count];
+        q = 0;
+        i = 0;
+        while (i < oldRowWithoutZeroes.Length)
         {
-            if ((index + napr < oldRowWithoutZeroes.Length) && (oldRowWithoutZeroes[index] ==
-                                                                oldRowWithoutZeroes[index + napr])
-                                                            && oldRowWithoutZeroes[index] != 0)
+            if ((i + 1 < oldRowWithoutZeroes.Length) && (oldRowWithoutZeroes[i] == oldRowWithoutZeroes[i + 1])
+                                                     && oldRowWithoutZeroes[i] != 0)
             {
-                shiftedRow[q] = oldRowWithoutZeroes[index] * 2;
-                index++;
+                bool didAnythingMove = true;
+                shiftedRow[q] = oldRowWithoutZeroes[i] * 2;
+                _Score += shiftedRow[q];
+                i++;
             }
             else
             {
-                shiftedRow[q] = oldRowWithoutZeroes[index];
+                shiftedRow[q] = oldRowWithoutZeroes[i];
             }
 
-            q += napr;
-            index += napr;
+            q++;
+            i++;
         }
 
-        return shiftedRow;
+        var buff = shiftedRow.ToList();
+        if (napr == -1)
+        {
+            buff.Reverse();
+        }
+        
+        return buff.ToArray();
     }
 }
