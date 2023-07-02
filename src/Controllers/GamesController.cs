@@ -13,9 +13,8 @@ public class GamesController : Controller
     public IActionResult Index()
     {
         // return Ok(TestData.AGameDto(new VectorDto {X = 1, Y = 1}));
-        var game = new Game(4, 4);
-        game.ResetGame();
-        var res = new GameDto(game.PaintGame(), true, true, 4, 4, Guid.Empty, false, 0);
+        var game = GamesRepository.GenerateGame();
+        var res = new GameDto(game.PaintGame(), true, true, 4, 4, game.id, false, 0);
         return Ok(res);
     }
 }

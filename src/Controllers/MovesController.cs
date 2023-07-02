@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Models;
+using thegame.ServerModels;
 using thegame.Services;
 
 namespace thegame.Controllers;
@@ -14,6 +15,7 @@ public class MovesController : Controller
     {
         var d = (userInput.ClickedPos) ?? (new VectorDto { X = 1, Y = 1 });
         var game = TestData.AGameDto(d);
+        // var game = new GameDto(4, 4);
         var cell = game.Cells.First(c => c.Type == "color4");
         var dir = GetDirection(userInput.KeyPressed);
         switch (dir)

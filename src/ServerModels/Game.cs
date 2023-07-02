@@ -9,6 +9,7 @@ public class Game
 {
     public List<Cell> Cells { get; set; }
     public int Width { get; set; }
+    public Guid id { get; set; }
     public int Height { get; set; }
 
     private bool Finish;
