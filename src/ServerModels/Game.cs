@@ -107,13 +107,13 @@ public class Game
                 int[] oldRow = new int[Height];
                 for (int j = 0; j < Height; j++)
                 {
-                    oldRow[j] = Cells.First((c => c.pos == new Vector {X = i, Y = j})).content;
+                    oldRow[j] = Cells.First((c => c.pos.X == j && c.pos.Y == i)).content;
                 }
 
                 int[] newRow = MoveRow(oldRow, begin, end, napr);
                 for (int j = 0; j < Height; j++)
                 {
-                    Cells.First((c => c.pos == new Vector {X = i, Y = j})).content = newRow[j];
+                    Cells.First((c => c.pos.X == j && c.pos.Y == i)).content = newRow[j];
                 }
             }
         }
@@ -124,16 +124,17 @@ public class Game
                 int[] oldRow = new int[Width];
                 for (int i = 0; i < Width; i++)
                 {
-                    oldRow[i] = Cells.First((c => c.pos == new Vector {X = i, Y = j})).content;
+                    oldRow[i] = Cells.First((c => c.pos.X == j && c.pos.Y == i)).content;
                 }
 
                 int[] newRow = MoveRow(oldRow, begin, end, napr);
                 for (int i = 0; i < Width; i++)
                 {
-                    Cells.First((c => c.pos == new Vector {X = i, Y = j})).content = newRow[i];
+                    Cells.First((c => c.pos.X == j && c.pos.Y == i)).content = newRow[i];
                 }
             }
         }
+        AddNewCell();
     }
 
     private int[] MoveRow(int[] oldRow, int begin, int end, int napr)
