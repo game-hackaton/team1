@@ -42,8 +42,8 @@ public class Game
         }
 
         var rnd = new Random();
-        var indx = rnd.Next(0, emptyCell.Count);
-        emptyCell[indx].content = rnd.Next(1, 2) * 2;
+        var indx = rnd.Next(0, emptyCell.Count + 1);
+        emptyCell[indx].content = rnd.Next(1, 3) * 2;
     }
     
     public void ResetGame()
