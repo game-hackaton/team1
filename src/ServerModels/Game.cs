@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using thegame.Models;
 
@@ -6,44 +7,44 @@ namespace thegame.ServerModels;
 
 public class Game
 {
-    public Cell[] Cells { get; set; }
+    public List<Cell> FillCells { get; set; }
+    public List<Cell> EmptyCells { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
 
     public Game(int Width, int Height)
     {
-        this.Cells = null;
+        FillCells = new List<Cell>();
+        EmptyCells = new List<Cell>();
         this.Width = Width;
         this.Height = Height;
     }
 
-    private Cell GetCellByCoordinate(int x, int y)
+    public void ResetGame()
     {
-        foreach (var cell in Cells)
+        FillCells.Clear();
+        EmptyCells.Clear();
+        for (int X = 1; X <= Width; X++)
         {
-            if (cell.pos.X == x && cell.pos.Y == y)
+            for (int Y = 1; Y <= Height; Y++)
             {
-                return cell;
+                EmptyCells.Add(new Cell(new Vector{X = X, Y = Y}, "td", 0 ));
             }
         }
-
-        return null;
     }
     
-    public GameDto PaintGame()
+    public CellDto[] PaintGame()
     {
-        var testCells = new CellDto[Width * Height];
-        for (int i = 1; i <= Width; i++)
+        var testCells = new List<CellDto>();
+        foreach (var cell in FillCells)
         {
-            for (int j = 1; j <= Height; j++)
-            {
-                var cell = GetCellByCoordinate(i, j);
-                if (cell != null)
-                {
-                    //testCells[] = cell.ToDto();
-                }
-            }
+            testCells.Add(cell.ToDto());
         }
+        foreach (var cell in EmptyCells)
+        {
+            testCells.Add(cell.ToDto());
+        }
+        return testCells.ToArray();
     }
     
 }
