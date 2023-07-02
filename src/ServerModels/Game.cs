@@ -24,11 +24,11 @@ public class Game
     {
         FillCells.Clear();
         EmptyCells.Clear();
-        for (int X = 1; X <= Width; X++)
+        for (int X = 0; X < Width; X++)
         {
-            for (int Y = 1; Y <= Height; Y++)
+            for (int Y = 0; Y < Height; Y++)
             {
-                EmptyCells.Add(new Cell(new Vector{X = X, Y = Y}, "td", 0 ));
+                EmptyCells.Add(new Cell(new Vector{X = X, Y = Y}, "tile-2", 0 ));
             }
         }
     }
