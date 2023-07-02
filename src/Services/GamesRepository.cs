@@ -23,10 +23,8 @@ public class GamesRepository
         game?.Move(direction);
         return game;
     }
-    public static Game GenerateGame()
+    public static Game GenerateGame(int width, int height)
     {
-        var width = 4;
-        var height = 4;
         var game = new Game(width, height);
         Guid id = Guid.NewGuid();
         game.id = id;

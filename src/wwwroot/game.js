@@ -3,6 +3,7 @@ const startMessage = document.getElementsByClassName("startMessage")[0];
 const startgameOverlay = document.getElementsByClassName("start")[0];
 const scoreElement = document.getElementsByClassName("scoreContainer")[0];
 const startButton = document.getElementsByClassName("startButton")[0];
+const fieldSizeInput = document.getElementById("fieldSize");
 let game = null;
 let currentCells = {};
 
@@ -14,8 +15,8 @@ function handleApiErrors(result) {
     return result.json();
 }
 
-async function startGame() {
-    game = await fetch("/api/games", { method: "POST" })
+async function startGame(fieldSize) {
+    game = await fetch(`/api/games?fieldSize=${fieldSize}`, { method: "POST" })
         .then(handleApiErrors);
     window.history.replaceState(game.id, "The Game", "/" + game.id);
     renderField(game);
@@ -147,7 +148,8 @@ function initializePage() {
     // use gameId if you want
     startButton.addEventListener("click", e => {
         startgameOverlay.classList.toggle("hidden", true);
-        startGame();
+        console.log("test");
+        startGame(fieldSizeInput.value);
     });
     addKeyboardListener();
     addResizeListener();
