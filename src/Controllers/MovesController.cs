@@ -14,7 +14,7 @@ public class MovesController : Controller
     public IActionResult Moves(Guid gameId, [FromBody] UserInputDto userInput)
     {
         var game = GamesRepository.MakeChanges(gameId, GetDirection(userInput.KeyPressed));
-        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, 0);
+        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, game.Score);
         return Ok(res);
     }
 

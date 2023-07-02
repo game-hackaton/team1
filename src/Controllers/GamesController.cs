@@ -13,7 +13,7 @@ public class GamesController : Controller
     public IActionResult Index([FromQuery] int fieldSize)
     {
         var game = GamesRepository.GenerateGame(fieldSize, fieldSize);
-        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, 0);
+        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, game.Score);
         return Ok(res);
     }
 }
