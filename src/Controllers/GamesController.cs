@@ -14,7 +14,7 @@ public class GamesController : Controller
     {
         // return Ok(TestData.AGameDto(new VectorDto {X = 1, Y = 1}));
         var game = GamesRepository.GenerateGame();
-        var res = new GameDto(game.PaintGame(), true, true, 4, 4, game.id, false, 0);
+        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, 0);
         return Ok(res);
     }
 }

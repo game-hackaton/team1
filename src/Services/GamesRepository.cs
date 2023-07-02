@@ -7,7 +7,7 @@ namespace thegame.Services;
 public class GamesRepository
 {
     private static Dictionary<Guid, Game> Games = new Dictionary<Guid, Game>();
-    private static Game getGameByGuid(Guid g)
+    private static Game? getGameByGuid(Guid g)
     {
         if (Games.ContainsKey(g))
         {
@@ -17,6 +17,12 @@ public class GamesRepository
         return null;
     }
 
+    public static Game MakeChanges(Guid id, Direction direction)
+    {
+        var game = getGameByGuid(id);
+        game?.Move(direction);
+        return game;
+    }
     public static Game GenerateGame()
     {
         var width = 4;
