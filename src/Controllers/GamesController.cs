@@ -10,12 +10,10 @@ namespace thegame.Controllers;
 public class GamesController : Controller
 {
     [HttpPost]
-    public IActionResult Index()
+    public IActionResult Index([FromQuery] int fieldSize)
     {
-        // return Ok(TestData.AGameDto(new VectorDto {X = 1, Y = 1}));
-        var game = new Game(4, 4);
-        game.ResetGame();
-        var res = new GameDto(game.PaintGame(), true, true, 4, 4, Guid.Empty, false, 0);
+        var game = GamesRepository.GenerateGame(fieldSize, fieldSize);
+        var res = new GameDto(game.PaintGame(), true, true, game.Width, game.Height, game.id, game.IsFinish, game.Score);
         return Ok(res);
     }
 }
