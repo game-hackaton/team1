@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using thegame.Extensions;
 
 namespace thegame.GameModels;
@@ -10,19 +11,19 @@ public class Game
     public Cell[,] Cells { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
+    
+    public static Random R= new Random();
 
     public bool IsFinished
     {
         get
         {
-            for (int i = 0; i < Width; i++)
-            {
-                for (int j = 0; j < Height; j++)
+            for (var i = 0; i < Width; i++)
+                for (var j = 0; j < Height; j++)
                 {
                     if (Cells[i, j] != null)
                         return false;
                 }
-            }
 
             return true;
         }
@@ -31,7 +32,15 @@ public class Game
 
     public void GenerateNewCell()
     {
-        
+        var empty = Cells
+            .Cast<Cell>()
+            .Where(cell => cell != null)
+            .Select(cell => cell.Pos)
+            .MinBy(cell => R.Next());
+
+        Cells[(int)empty.X, (int)empty.Y] = R.Next(2) == 0
+            ? new Cell(empty) {Score = 2}
+            : new Cell(empty) {Score = 4};
     }
 
     public bool CheckMoveIsPossible(Direction direction)
