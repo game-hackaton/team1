@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,14 @@ builder.Services.AddMvc();
 
 builder.Services.AddAutoMapper(cfg =>
 {
+    cfg.CreateMap<Point, VectorDto>()
+        .ForMember(
+            dest => dest.X,
+            opt => opt.MapFrom(src => src.X))
+        .ForMember(
+            dest => dest.Y,
+            opt => opt.MapFrom(src => src.Y));
+    
     cfg.CreateMap<Cell, CellDto>()
         .ForMember(
             dest => dest.Id,
