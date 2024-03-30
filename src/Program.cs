@@ -25,7 +25,7 @@ builder.Services.AddAutoMapper(cfg =>
             opt => opt.MapFrom(src => src.Id.ToString()))
         .ForMember(
             dest => dest.Pos,
-            opt => opt.MapFrom(src => src.Id.ToString()))
+            opt => opt.MapFrom(src => src.Pos))
         .ForMember(
             dest => dest.ZIndex,
             opt => opt.MapFrom(src => 1))

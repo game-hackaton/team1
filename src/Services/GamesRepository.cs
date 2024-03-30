@@ -10,7 +10,7 @@ public class GamesRepository
 
     public void Add(Game game)
     {
-        dictionary[game.Id] == game;
+        dictionary[game.Id] = game;
     }
 
     public Game? FindById(Guid id)

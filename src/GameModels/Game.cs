@@ -8,7 +8,7 @@ namespace thegame.GameModels;
 
 public class Game
 {
-    public int Id { get; set; } = 1;
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Map Map { get; set; }
     public int Width { get; set; } = 4;
     public int Height { get; set; } = 4;
