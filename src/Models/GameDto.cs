@@ -1,4 +1,5 @@
 using System;
+using thegame.GameModels;
 
 namespace thegame.Models;
 
@@ -24,4 +25,15 @@ public class GameDto
     public Guid Id { get; set; }
     public bool IsFinished { get; set; }
     public int Score { get; set; }
+
+    public class MapProfile : AutoMapper.Profile
+    {
+        MapProfile()
+        {
+            CreateMap<Game, GameDto>()
+                .ForMember(
+                    dest => dest.Cells,
+                    opt => opt.MapFrom(src => src.))
+        }
+    } 
 }
