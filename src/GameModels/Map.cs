@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Numerics;
 
@@ -24,6 +25,8 @@ public class Map
                 cell.Pos = new Point(i, j);
                 return cell.Pos;
             }
+
+        throw new InvalidOperationException();
     }
     
     public Cell this[Point indexes] => _cells[indexes.X, indexes.Y];
