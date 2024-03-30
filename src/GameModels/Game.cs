@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using thegame.Extensions;
@@ -39,15 +40,21 @@ public class Game
 
     private void GenerateNewCell()
     {
-        var empty = Map
-            .GetCellsEnumerable()
-            .Where(cell => cell != null)
-            .Select(cell => cell.Pos)
-            .MinBy(cell => R.Next());
+        var freePoints = new List<Point>(Width * Height);
+        for (var i = 0; i < Width; i++)
+        {
+            for (var j = 0; j < Height; j++)
+            {
+                var pos = new Point(i, j);
+                if (Map[pos] is null)
+                    freePoints.Add(pos);
+            }
+        }
 
-        Map[empty] = R.Next(2) == 0
-            ? new Cell(empty) {Score = 2}
-            : new Cell(empty) {Score = 4};
+        var rPoint = freePoints[R.Next(freePoints.Count)];
+        Map[rPoint] = R.Next(2) == 0
+            ? new Cell(rPoint) {Score = 2}
+            : new Cell(rPoint) {Score = 4};
     }
 
     private void Move(Direction direction)
