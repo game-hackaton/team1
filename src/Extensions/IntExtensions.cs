@@ -4,7 +4,7 @@ namespace thegame.Extensions;
 
 public static class IntExtensions
 {
-    public static Direction GetFromKeycode(this int keyCode)
+    public static Direction GetDirection(this int keyCode)
     {
         return keyCode switch
         {
