@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using thegame.Extensions;
 using thegame.Models;
 
 namespace thegame.Services;
@@ -8,27 +9,22 @@ public class TestData
 {
     public static GameDto AGameDto(int keyPressed)
     {
-        var width = 8;
-        var height = 8;
-        //37 - left
-        //38 - up
-        //39 - right
-        //40 - down
-        
+        var width = 4;
+        var height = 4;
         var testCells = Array.Empty<CellDto>();
         switch (keyPressed)
         {
+            case 37:
+                testCells = new[] { new CellDto("1", new VectorDto { X = 0, Y = 1 }, "color1", "", 0) };
+                break;            
             case 38:
-                testCells = new[] { new CellDto("1", new VectorDto { X = 0, Y = 0 }, "color1", "", 0) };
+                testCells = new[] { new CellDto("1", new VectorDto { X = 1, Y = 0 }, "color1", "", 0) };
                 break;            
             case 39:
-                testCells = new[] { new CellDto("1", new VectorDto { X = 7, Y = 7 }, "color1", "", 0) };
+                testCells = new[] { new CellDto("1", new VectorDto { X = 3, Y = 1 }, "color1", "", 0) };
                 break;            
             case 40:
-                testCells = new[] { new CellDto("1", new VectorDto { X = 0, Y = 7 }, "color1", "", 0) };
-                break;            
-            case 41:
-                testCells = new[] { new CellDto("1", new VectorDto { X = 7, Y = 0 }, "color1", "", 0) };
+                testCells = new[] { new CellDto("1", new VectorDto { X = 1, Y = 3 }, "color1", "", 0) };
                 break;
             
         }
