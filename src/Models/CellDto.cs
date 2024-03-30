@@ -1,5 +1,3 @@
-using thegame.GameModels;
-
 namespace thegame.Models;
 
 public class CellDto
@@ -26,27 +24,4 @@ public class CellDto
     public int ZIndex { get; set; }
     public string Type { get; set; }
     public string Content { get; set; }
-
-    public class MapProfile : AutoMapper.Profile
-    {
-        public MapProfile()
-        {
-            CreateMap<Cell, CellDto>()
-                .ForMember(
-                    dest => dest.Id,
-                    opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(
-                    dest => dest.Pos,
-                    opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(
-                    dest => dest.ZIndex,
-                    opt => opt.MapFrom(src => 1))
-                .ForMember(
-                    dest => dest.Type,
-                    opt => opt.MapFrom(src => $"tile-{src.Score}"))
-                .ForMember(
-                    dest => dest.Content,
-                    opt => opt.MapFrom(src => src.Score.ToString()));
-        }
-    }
 }

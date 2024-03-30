@@ -7,10 +7,10 @@ namespace thegame.GameModels;
 
 public class Game
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; } = 1;
     public Map Map { get; set; }
-    public int Width { get; set; }
-    public int Height { get; set; }
+    public int Width { get; set; } = 4;
+    public int Height { get; set; } = 4;
     public int Score { get; set; }
 
     public bool IsFinished
@@ -18,13 +18,11 @@ public class Game
         get
         {
             for (var i = 0; i < Width; i++)
-                for (var j = 0; j < Height; j++)
-                {
-                    if (Map[i, j] != null)
-                        return false;
-                }
+            for (var j = 0; j < Height; j++)
+                if (Map[i, j] != null)
+                    return true;
 
-            return true;
+            return false;
         }
     }
     

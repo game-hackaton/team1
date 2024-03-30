@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using thegame.GameModels;
@@ -11,18 +12,41 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.CreateMap<Cell, CellDto>()
         .ForMember(
-            dest => dest.Content,
-            opt => opt.MapFrom(src => src.Score.ToString()))
-        .ForMember(
-            dest => dest.Type,
-            opt => opt.MapFrom(src => $"tile-{src.Score}"))
-        .ForMember(
             dest => dest.Id,
             opt => opt.MapFrom(src => src.Id.ToString()))
         .ForMember(
             dest => dest.Pos,
-            opt => opt.MapFrom(src => src.Id.ToString()));
-    
+            opt => opt.MapFrom(src => src.Id.ToString()))
+        .ForMember(
+            dest => dest.ZIndex,
+            opt => opt.MapFrom(src => 1))
+        .ForMember(
+            dest => dest.Type,
+            opt => opt.MapFrom(src => $"tile-{src.Score}"))
+        .ForMember(
+            dest => dest.Content,
+            opt => opt.MapFrom(src => src.Score.ToString()));
+
+    cfg.CreateMap<Game, GameDto>()
+        .ForMember(
+            dest => dest.Cells,
+            opt => opt.MapFrom(src => src.Map.ToArray()))
+        .ForMember(
+            dest => dest.MonitorKeyboard,
+            opt => opt.MapFrom(src => true))
+        .ForMember(dest => dest.MonitorMouseClicks,
+            opt => opt.MapFrom(src => false))
+        // todo
+        .ForMember(
+            dest => dest.Id,
+            opt => opt.MapFrom(src => src.Id.ToString()))
+        .ForMember(
+            dest => dest.IsFinished,
+            opt => opt.MapFrom(src => src.IsFinished))
+        .ForMember(
+            dest => dest.Score,
+            opt => opt.MapFrom(src => src.Score));
+
 });
 
 var app = builder.Build();
