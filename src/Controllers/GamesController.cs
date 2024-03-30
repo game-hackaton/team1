@@ -19,6 +19,9 @@ public class GamesController : Controller
     [HttpPost]
     public IActionResult Index()
     {
+        var a = _mapper.Map<GameDto>(_game);
+        var b = _mapper.Map<GameDto>(_game);
+        
         return Ok(_mapper.Map<GameDto>(_game));
     }
 }

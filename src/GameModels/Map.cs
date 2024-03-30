@@ -17,9 +17,8 @@ public class Map : IEnumerable<Cell>
         Bounds = bounds;
         _cells = new Cell[bounds, bounds];
     }
-
-    [Obsolete]
-    public Point Add(Cell cell)
+    
+    public void Add(Cell cell)
     {
         for (var i = 0; i < Bounds; i++)
         for (var j = 0; j < Bounds; j++)
@@ -27,20 +26,16 @@ public class Map : IEnumerable<Cell>
             {
                 _cells[i, j] = cell;
                 cell.Pos = new Point(i, j);
-                return cell.Pos;
+                return;
             }
-
-        throw new InvalidOperationException();
     }
 
-    public IEnumerable<Cell> GetCellsEnumerable() => _cells.Cast<Cell>();
-
-    public Cell this[Point indexes]
+    public bool IsInBounds(int i, int j)
     {
-        get => _cells[indexes.X, indexes.Y];
-        set => _cells[indexes.X, indexes.Y] = value;
+        return i >= 0 && i < Bounds
+                      && j >= 0 && j < Bounds;
     }
-
+    
     public Cell this[int x, int y]
     {
         get => _cells[x, y];
@@ -49,10 +44,12 @@ public class Map : IEnumerable<Cell>
 
     public IEnumerator<Cell> GetEnumerator()
     {
-        return _cells
-            .Cast<Cell>()
-            .Where(c => c is not null)
-            .GetEnumerator();
+        for (var i = 0; i < Bounds; i++)
+        for (var j = 0; j < Bounds; j++)
+        {
+            if (_cells[i, j] is not null)
+                yield return _cells[i, j];
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()

@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using thegame.Extensions;
 
 namespace thegame.GameModels;
 
@@ -14,13 +10,19 @@ public class Game
     public int Height { get; set; } = 4;
     public int Score { get; set; }
 
+    public Game()
+    {
+        Map = new Map(Width);
+        Map.Add(new Cell(R.Next(5) == 0 ? 4 : 2));
+    }
+
     public bool IsFinished
     {
         get
         {
             for (var i = 0; i < Width; i++)
             for (var j = 0; j < Height; j++)
-                if (Map[i, j] != null)
+                if (Map[i, j] is not null)
                     return true;
 
             return false;
@@ -31,30 +33,11 @@ public class Game
 
     public void DoNextStep(Direction direction)
     {
-        GenerateNewCell();
         if (IsFinished)
             return;
-        
+
+        Map.Add(new Cell(R.Next(2) == 0 ? 4 : 2));
         Move(direction);
-    }
-
-    private void GenerateNewCell()
-    {
-        var freePoints = new List<Point>(Width * Height);
-        for (var i = 0; i < Width; i++)
-        {
-            for (var j = 0; j < Height; j++)
-            {
-                var pos = new Point(i, j);
-                if (Map[pos] is null)
-                    freePoints.Add(pos);
-            }
-        }
-
-        var rPoint = freePoints[R.Next(freePoints.Count)];
-        Map[rPoint] = R.Next(2) == 0
-            ? new Cell(rPoint) {Score = 2}
-            : new Cell(rPoint) {Score = 4};
     }
 
     private void Move(Direction direction)
@@ -73,88 +56,51 @@ public class Game
             case Direction.Down:
                 MoveDown();
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
     }
 
     private void MoveLeft()
     {
         for (var i = 0; i < Width; i++)
-        {
-            for (var j = 0; j < Height; j++)
-            {
-                if (i == 0 || i == Width - 1) continue;
-                if (j == 0 || j == Height - 1) continue;
-                var current = Map[i, j];
-                var previous = Map[i - 1, j];
-                if (current.Score == previous.Score)
-                {
-                    previous.Score *= 2;
-                }
-
-                Map[i, j] = null;
-            }
-        }
+        for (var j = 0; j < Height; j++)
+            ProceedCell(i, j, -1, 0);
     }
     
     private void MoveRight()
     {
         for (var i = Width - 1; i >= 0; i++)
-        {
-            for (var j = 0; j < Height; j++)
-            {
-                if (i == 0 || i == Width - 1) continue;
-                if (j == 0 || j == Height - 1) continue;
-                var current = Map[i, j];
-                var previous = Map[i + 1, j];
-                if (current.Score == previous.Score)
-                {
-                    previous.Score *= 2;
-                }
-
-                Map[i, j] = null;
-            }
-        }
+        for (var j = 0; j < Height; j++)
+            ProceedCell(i, j, 1, 0);
     }
     
     private void MoveUp()
     {
         for (var i = 0; i < Width; i++)
-        {
-            for (var j = 0; j < Height; j++)
-            {
-                if (i == 0 || i == Width - 1) continue;
-                if (j == 0 || j == Height - 1) continue;
-                var current = Map[i, j];
-                var previous = Map[i, j - 1];
-                if (current.Score == previous.Score)
-                {
-                    previous.Score *= 2;
-                }
-
-                Map[i, j] = null;
-            }
-        }
+        for (var j = 0; j < Height; j++)
+            ProceedCell(i, j, 0, -1);
     }
     
     private void MoveDown()
     {
         for (var i = 0; i < Width; i++)
+        for (var j = Height - 1; j >= 0; j--)
+            ProceedCell(i, j, 0, 1);
+    }
+    
+    private void ProceedCell(int i, int j, int deltaX, int deltaY)
+    {
+        if (!Map.IsInBounds(i + deltaX, j + deltaY))
+            return;
+        
+        var current = Map[i, j];
+        var previous = Map[i + deltaX, j + deltaY];
+            
+        if (current.Score == previous.Score)
         {
-            for (var j = Height - 1; j >= 0; j++)
-            {
-                if (i == 0 || i == Width - 1) continue;
-                if (j == 0 || j == Height - 1) continue;
-                var current = Map[i, j];
-                var previous = Map[i, j + 1];
-                if (current.Score == previous.Score)
-                {
-                    previous.Score *= 2;
-                }
-
-                Map[i, j] = null;
-            }
+            previous.Score *= 2;
+            previous.Pow += 1;
         }
+
+        Map[i, j] = null;
     }
 }

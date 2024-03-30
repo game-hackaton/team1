@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using thegame.Extensions;
 using thegame.GameModels;
 using thegame.Models;
 using thegame.Services;
@@ -17,7 +18,7 @@ public class MovesController : Controller
         _mapper = mapper;
     }
     
-    private Game _game = new Game();
+    private Game _game = new();
     
     [HttpPost]
     public IActionResult Moves(Guid gameId, [FromBody]UserInputDto userInput)
@@ -27,6 +28,12 @@ public class MovesController : Controller
         // var game = TestData.AGameDto(userInput.KeyPressed);
         // if (userInput.ClickedPos != null)
         //     game.Cells.First(c => c.Type == "color4").Pos = userInput.ClickedPos;
-        return Ok(_mapper.Map<GameDto>(_game));
+        
+        _game.DoNextStep(userInput.KeyPressed.GetDirection());
+
+        var a = _mapper.Map<GameDto>(_game);
+        var b = _mapper.Map<GameDto>(_game);
+        
+        return Ok(a);
     }
 }

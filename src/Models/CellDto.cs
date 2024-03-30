@@ -10,14 +10,6 @@ public class CellDto
     /// <param name="type">Frontend apply images and other styling to the cell according to this type</param>
     /// <param name="content">Frontend can put this text in the cell</param>
     /// <param name="zIndex">Frontend render cells with higher zIndex above cells with lower zIndex</param>
-    public CellDto(string id, VectorDto pos, string type, string content, int zIndex)
-    {
-        Id = id;
-        Pos = pos;
-        Type = type;
-        Content = content;
-        ZIndex = zIndex;
-    }
 
     public string Id { get; set; }
     public VectorDto Pos { get; set; }
