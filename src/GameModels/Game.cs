@@ -73,40 +73,6 @@ public class Game
         }
     }
 
-    private Point GetPreviousPosition(Direction direction, Point position)
-    {
-        switch (direction)
-        {
-            case Direction.Up:
-                break;
-            case Direction.Right:
-                break;
-            case Direction.Down:
-                break;
-            case Direction.Left:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-        }
-    }
-
-    private Point? GetNextPosition(Direction direction, Point? position = null)
-    {
-        switch (direction)
-        {
-            case Direction.Up:
-                break;
-            case Direction.Right:
-                break;
-            case Direction.Down:
-                break;
-            case Direction.Left:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-        }
-    }
-
     private void MoveLeft()
     {
         for (var i = 0; i < Width; i++)
