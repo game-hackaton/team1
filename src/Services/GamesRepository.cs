@@ -6,7 +6,7 @@ namespace thegame.Services;
 
 public class GamesRepository
 {
-    private Dictionary<Guid, Game> dictionary = new();
+    private readonly Dictionary<Guid, Game> dictionary = new();
 
     public void Add(Game game)
     {

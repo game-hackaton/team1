@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using thegame.GameModels;
 using thegame.Models;
+using thegame.Services;
 
 var builder = WebApplication.CreateBuilder();
 
 builder.Services.AddMvc();
+builder.Services.AddSingleton<GamesRepository>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -25,7 +27,7 @@ builder.Services.AddAutoMapper(cfg =>
             opt => opt.MapFrom(src => src.Id.ToString()))
         .ForMember(
             dest => dest.Pos,
-            opt => opt.MapFrom(src => src.Pos))
+            opt => opt.MapFrom(src => src.Id.ToString()))
         .ForMember(
             dest => dest.ZIndex,
             opt => opt.MapFrom(src => 1))
