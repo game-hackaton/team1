@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 
 namespace thegame.GameModels;
@@ -15,6 +17,7 @@ public class Map
         _cells = new Cell[bounds, bounds];
     }
 
+    [Obsolete]
     public Point Add(Cell cell)
     {
         for (var i = 0; i < _bounds; i++)
@@ -28,6 +31,18 @@ public class Map
 
         throw new InvalidOperationException();
     }
-    
-    public Cell this[Point indexes] => _cells[indexes.X, indexes.Y];
+
+    public IEnumerable<Cell> GetCellsEnumerable() => _cells.Cast<Cell>();
+
+    public Cell this[Point indexes]
+    {
+        get => _cells[indexes.X, indexes.Y];
+        set => _cells[indexes.X, indexes.Y] = value;
+    }
+
+    public Cell this[int x, int y]
+    {
+        get => _cells[x, y];
+        set => _cells[x, y] = value;
+    }
 }
