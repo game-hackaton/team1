@@ -11,8 +11,7 @@ public class Game
     public Map Map { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    
-    public static Random R= new Random();
+    public int Score { get; set; }
 
     public bool IsFinished
     {
@@ -28,9 +27,19 @@ public class Game
             return true;
         }
     }
-    public int Score { get; set; }
+    
+    private static Random R = new Random();
 
-    public void GenerateNewCell()
+    public void DoNextStep(Direction direction)
+    {
+        GenerateNewCell();
+        if (IsFinished)
+            return;
+        
+        Move(direction);
+    }
+
+    private void GenerateNewCell()
     {
         var empty = Map
             .GetCellsEnumerable()
@@ -43,18 +52,7 @@ public class Game
             : new Cell(empty) {Score = 4};
     }
 
-    public bool CheckMoveIsPossible(Direction direction)
-    {
-        throw new NotImplementedException();
-    }
-
-    private bool CellCanMove(Direction direction, Point pos)
-    {
-        var dir = direction.GetPoint();
-        throw new NotImplementedException();
-    }
-
-    public void Move(Direction direction)
+    private void Move(Direction direction)
     {
         switch (direction)
         {
